@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Comptible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        margin: 10px;
+    }
+
+    div{
+        width: 100px;
+        height: 100px;
+        border: 1px dashed #ccc;
+        margin-bottom: 10px;
+    }
+    .changestyle{
+        width: 200px;
+        height: 200px;
+        background-color: lightblue;
+    }
+
+    .bold-text{
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    #carousel{
+        width: 300px;
+        height: 200px;
+        position: relative;
+    }
+
+    #carousel li{
+        width: 200px;
+        line-height: 200px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+        text-shadow: 0 0 5px #000;
+        font-size:35px;
+        color: #fff;
+        opacity: 0;
+        transition: opacity 1s ease;
+
+    }
+
+    #carousel li:nth-child(1){
+        background-color: red;
+    }
+    #carousel li:nth-child(2){
+        background-color: orange;
+    }
+    #carousel li:nth-child(3){
+        background-color: yellow;
+    }
+    #carousel li:nth-child(4){
+        background-color: green;
+    }
+    #carousel li:nth-child(5){
+        background-color: blue;
+    }
+    #carousel li.active{
+        opacity: 1;
+        z-index: 10;
+    }
+    
+</style>
+<body>
+    <div id="block">默认内容</div>
+    <!-- <div id = "container">
+    <p >默认内容</p>
+    <p class = "item">默认内容</p>
+    <p >默认内容</p>
+    <p >默认内容</p>
+    <p >默认内容</p>
+    </div> -->
+
+    <!-- 轮播图结构 -->
+    <ul id = "carousel">
+        <li class = "active">默认内容1</li>
+        <li>默认内容2</li>
+        <li>默认内容3</li>
+        <li>默认内容4</li>
+        <li>默认内容5</li>
+    </ul>
+    <button id = "prev">上一张</button>
+    <button id = "next">下一张</button>
+    <script>
+        // 1. 获取元素
+        var block = document.getElementById('block');
+        console.log(block);
+        // // 2. 修改内容
+        // block.textContent = 'js设置的文本';
+
+
+        // // 获取所有 <p> 元素并用数组文本替换
+        // var contents = document.querySelectorAll('#container p'); // #是id选择器  .是class选择器，中间空格是代表到下一层级选择器
+        // console.log(contents); // 显示的是实时的节点列表
+        
+        // var textArr = [
+        //     'js设置的文本a',
+        //     'js设置的文本b',
+        //     'js设置的文本c',
+        //     'js设置的文本d',
+        //     'js设置的文本250'
+        // ];
+        // for (var i = 0; i < textArr.length && i < contents.length; i++) {
+        //     contents[i].textContent = textArr[i];
+        // }
+
+        // var secondItem = document.querySelector('.item'); // 只匹配第一个元素
+        // secondItem.textContent = '替罪羊';
+        // secondItem.previousElementSibling.textContent = '我是被替换的'; // 上一个元素
+        // secondItem.nextElementSibling.textContent = '我也是被替换的'; // 下一个元素
+
+        // var container = secondItem.parentElement; // 获取父元素,也就是<div id = "container">
+        // console.log(container);
+        // // container.textContent = '新内容'; // 父元素替换为新内容
+        // var items = container.children; // 获取所有子元素
+        // console.log(items);
+
+        // 2.样式处理
+        var block =  document.getElementById('block');
+        // block.style.width = '80px';
+        // block.style.height = '80px';
+        // block.style.backgroundColor = 'tomato';
+        // block.className =  'changestyle';
+        
+        // 3.文本处理
+        block.innerHTML = '普通内容<span class="bold-text"> 加粗的文本 </span>'; // 支持html标签
+
+        // 4.事件处理
+        // block.onclick = function() {
+        //     alert('surpise!');
+        // }
+
+        // block.onclick = function() {
+        //     block.style.backgroundColor = 'lightgreen';
+        // } // 覆盖问题
+        block.addEventListener('click', function() { // 事件监听
+            alert('surpise!');
+        });
+        block.addEventListener('click', function() {
+            alert('surpise again!');
+        });
+
+        // 轮播图功能实现
+        var carousel = document.querySelector('#carousel'); // carousel元素获取
+        var items = carousel.children; // 获得孩子元素
+        console.log(items); // HTMLCollection(5) <li.active>, <li>, <li>, <li>, <li>
+        
+        // 前后按钮
+        var prevBtn = document.querySelector('#prev'); // 设置按钮
+        var nextBtn = document.querySelector('#next'); // 设置按钮
+
+        var index = 0; // 当前显示的图片索引
+        nextBtn.addEventListener('click', function() {
+            // 先移除当前的 active，再切换到下一个（循环）
+            items[index].classList.remove('active');
+            index = (index + 1) % items.length;
+            items[index].classList.add('active');
+        });
+
+        prevBtn.addEventListener('click', function() {
+            // 先移除当前的 active，再切换到上一个（循环）
+            items[index].classList.remove('active');
+            index = (index - 1 + items.length) % items.length; // 必须加上items.length，防止负数不能取余
+            items[index].classList.add('active');
+        });
+        // 5.定时器
+        setTimeout(function() {
+            alert('surprise');
+        }, 2000); // 2000ms = 2s
+
+
+        setInterval(function() {
+            console.log('间隔两秒输出一次');
+        }, 2000);
+
+        setTimeout(function() {
+            clearInterval(); // 停止定时器
+        }, 6000); // 6秒后停止
+
+        // 6.自动播放
+
+        setInterval(function() {
+            // 先移除当前的 active，再切换到下一个（循环）
+            items[index].classList.remove('active');
+            index = (index + 1) % items.length;
+            items[index].classList.add('active');
+        }, 3000); // 每3秒切换一次图片
+    </script>
+</body>
+</html>
